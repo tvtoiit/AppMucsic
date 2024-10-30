@@ -28,5 +28,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Activity Login -->
+        <activity
+            android:name="com.example.appmusic.activity.LoginActivity"
+            android:label="Man Hinh Login" />
+        <!-- Activity Register -->
+        <activity
+            android:name="com.example.appmusic.activity.RegisterActivity"
+            android:label="Man hinh Register" />
+        <!-- Activity Nen -->
+        <activity
+            android:name="com.example.appmusic.activity.NenActivity"
+            android:label="Man hinh Nen" />
     </application>
 </manifest>
