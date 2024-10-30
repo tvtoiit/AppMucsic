@@ -46,6 +46,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvHello" />
 
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập"
+            android:onClick="goToLoginPage" />
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng kí"
+            android:onClick="goToRegisterPage" />
+
+
+        <Button
+            android:id="@+id/btnNen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nền"
+            android:onClick="goToNenPage" />
+
         <EditText
             android:id="@+id/edtSeach"
             android:layout_width="360dp"
@@ -194,10 +216,6 @@
                 </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
-
-
-
-
     </LinearLayout>
     <!-- TODO: Update blank fragment layout -->
     <com.google.android.material.navigation.NavigationView

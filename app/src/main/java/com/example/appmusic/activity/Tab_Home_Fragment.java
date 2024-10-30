@@ -1,5 +1,6 @@
 package com.example.appmusic.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.appthibanglaixe.R;
 import com.google.android.material.navigation.NavigationView;
@@ -76,9 +78,52 @@ public class Tab_Home_Fragment extends Fragment implements NavigationView.OnNavi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        Button btnLogin = view.findViewById(R.id.btnLogin);
+
+        Button btnRegister = view.findViewById(R.id.btnRegister);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xử lý khi button đăng nhập được click
+                goToLoginPage();
+            }
+        });
+
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToRegisterPage();
+            }
+        });
+
+        Button btnNen = view.findViewById(R.id.btnNen);
+
+        btnNen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToNenPage();
+            }
+        });
         return view;
     }
 
+    // Hàm chuyển đến trang đăng nhập
+    private void goToLoginPage() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    // Hàm chuyển đến trang đăng kí
+    private void goToRegisterPage() {
+        Intent intent = new Intent(getActivity(), RegisterActivity.class);
+        startActivity(intent);
+    }
+
+    // Hàm chuyển đến trang nền
+    private void goToNenPage() {
+        Intent intent = new Intent(getActivity(), NenActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
