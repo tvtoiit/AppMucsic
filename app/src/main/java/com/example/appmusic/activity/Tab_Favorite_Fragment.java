@@ -1,5 +1,6 @@
 package com.example.appmusic.activity;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,7 +8,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.example.appmusic.entity.modify;
 import com.example.appmusic.adapter.MusicAdapter;
 import com.example.appmusic.model.Music;
@@ -27,6 +32,8 @@ public class Tab_Favorite_Fragment extends Fragment {
     private MusicAdapter musicAdapter;
     private List<Music> musicList;
     private modify musicModifier;
+    private ImageView selectedCoverImage, likeBtn;
+    private Music selectedMusic;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,19 +82,56 @@ public class Tab_Favorite_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_favorite, container, false);
-
-        // Ánh xạ ListView
+        // Initialize the views
         listView = view.findViewById(R.id.favoriteSongsListView);
+        selectedCoverImage = view.findViewById(R.id.selectedCoverImage);
+        likeBtn = view.findViewById(R.id.likeButton);
 
-        // Khởi tạo danh sách nhạc và lấy các bài hát yêu thích
+        // Get favorite songs
         musicList = musicModifier.getFavoriteSongs(getContext());
 
-        // Tạo Adapter và gán cho ListView
+        // Set up the adapter
         musicAdapter = new MusicAdapter(getContext(), musicList);
         listView.setAdapter(musicAdapter);
 
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            selectedMusic = musicList.get(position);
+            String coverImageName = selectedMusic.getCoverImage();
+
+            if (coverImageName != null && !coverImageName.isEmpty()) {
+                // Lấy ID của tài nguyên drawable từ tên
+                int resourceId = getResources().getIdentifier(coverImageName, "drawable", getActivity().getPackageName());
+
+                if (resourceId != 0) {
+                    selectedCoverImage.setImageResource(resourceId);
+                    selectedCoverImage.setVisibility(View.VISIBLE);
+                } else {
+                    selectedCoverImage.setVisibility(View.GONE);
+                }
+            } else {
+                selectedCoverImage.setVisibility(View.GONE);
+            }
+        });
+
+        likeBtn.setOnClickListener(v -> {
+            if (selectedMusic != null) {
+                int musicId = selectedMusic.getId();
+                int favoriteValue = 0;
+
+                // Tạo đối tượng modify để gọi phương thức
+                modify modifyDb = new modify(getContext());
+                modifyDb.updateFavorite(musicId, favoriteValue);
+
+                // Lấy lại danh sách bài hát từ cơ sở dữ liệu
+                musicList = modifyDb.getFavoriteSongs(getContext());
+
+                musicAdapter.updateData(musicList);
+            } else {
+                Toast.makeText(getContext(), "Vui lòng chọn một bài hát trước!", Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 }

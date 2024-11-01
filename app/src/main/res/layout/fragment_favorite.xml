@@ -9,9 +9,6 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-
-<!--Thiết kế chi tiết ở đây-->
-
     <ImageView
         android:id="@+id/likeButton"
         android:layout_width="50dp"
@@ -20,6 +17,15 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="50dp"
         android:src="@drawable/icontim" />
+
+    <!-- ImageView cho ảnh bài hát được chọn -->
+    <ImageView
+        android:id="@+id/selectedCoverImage"
+        android:layout_width="143dp"
+        android:layout_height="107dp"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"  />
 
     <ImageView
         android:id="@+id/moreOptionsButton"

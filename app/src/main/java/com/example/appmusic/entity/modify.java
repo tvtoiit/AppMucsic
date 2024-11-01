@@ -31,6 +31,20 @@ public class modify {
         db.insert(DbContract.UserEntry.TABLE_NAME, null, values);
     }
 
+    // Phương thức cập nhật trạng thái favorite của bài hát
+    public void updateFavorite(int musicId, int favoriteValue) {
+        SQLiteDatabase db = sqDuLieu.getInstance(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DbContract.MusicEntry.COLUMN_FAVORITE, favoriteValue);
+
+        // Thực hiện câu lệnh UPDATE
+        String selection = DbContract.MusicEntry._ID + " = ?";
+        String[] selectionArgs = { String.valueOf(musicId) };
+
+        db.update(DbContract.MusicEntry.TABLE_NAME, values, selection, selectionArgs);
+        db.close(); // Đóng database
+    }
+
     public long addMusic(Context context, String songTitle, String artistAlbum, String coverImage, int duration, int currentTime, int favorite, String filePath) {
         // Lấy database ở chế độ ghi
         SQLiteDatabase db = sqDuLieu.getInstance(context).getWritableDatabase();
@@ -43,7 +57,7 @@ public class modify {
         values.put(DbContract.MusicEntry.COLUMN_DURATION, duration);
         values.put(DbContract.MusicEntry.COLUMN_CURRENT_TIMEB, currentTime);
         values.put(DbContract.MusicEntry.COLUMN_FAVORITE, favorite);
-        //values.put(DbContract.MusicEntry.COLUMN_FILE_PATH, filePath);
+        values.put(DbContract.MusicEntry.COLUMN_FILE_PATH, filePath);
 
         // Chèn dữ liệu vào bảng và lấy ID của hàng vừa chèn
         long newRowId = db.insert(DbContract.MusicEntry.TABLE_NAME, null, values);
@@ -78,19 +92,22 @@ public class modify {
         SQLiteDatabase db = sqDuLieu.getInstance(context).getReadableDatabase();
 
         // Truy vấn để lấy các bài hát yêu thích
-        String query = "SELECT " + DbContract.MusicEntry.COLUMN_SONG_TITLE + ", " +
-                DbContract.MusicEntry.COLUMN_ARTIST_ALBUM + " FROM " +
+        String query = "SELECT " + DbContract.MusicEntry._ID + ", " +
+                DbContract.MusicEntry.COLUMN_SONG_TITLE + ", " +
+                DbContract.MusicEntry.COLUMN_ARTIST_ALBUM + ", " +
+                DbContract.MusicEntry.COLUMN_COVER_IMAGE + " FROM " +
                 DbContract.MusicEntry.TABLE_NAME + " WHERE " +
                 DbContract.MusicEntry.COLUMN_FAVORITE + " = 1";
 
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.MusicEntry._ID));
                 String songTitle = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_SONG_TITLE));
                 String artistAlbum = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_ARTIST_ALBUM));
-
+                String hinhAnh = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_COVER_IMAGE));
                 // Tạo đối tượng Music và thêm vào danh sách
-                favoriteSongs.add(new Music(songTitle, artistAlbum));
+                favoriteSongs.add(new Music(id, songTitle, artistAlbum, hinhAnh));
             } while (cursor.moveToNext());
         }
 

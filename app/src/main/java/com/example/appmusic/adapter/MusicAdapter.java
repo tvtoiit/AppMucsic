@@ -13,16 +13,22 @@ import com.example.appthibanglaixe.R;
 import java.util.List;
 
 public class MusicAdapter extends ArrayAdapter<Music> {
+    private List<Music> musicList;
     public MusicAdapter(Context context, List<Music> musicList) {
         super(context, 0, musicList);
+        this.musicList = musicList;
+    }
+
+    public void updateData(List<Music> newMusicList) {
+        musicList.clear();
+        musicList.addAll(newMusicList);
+        notifyDataSetChanged();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Lấy đối tượng Music cho vị trí hiện tại
         Music music = getItem(position);
 
-        // Kiểm tra convertView đã được khởi tạo chưa
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.favorite_song_item, parent, false);
         }

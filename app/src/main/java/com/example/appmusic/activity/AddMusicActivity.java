@@ -1,6 +1,7 @@
 package com.example.appmusic.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,7 +22,7 @@ import com.example.appthibanglaixe.R;
 public class AddMusicActivity extends AppCompatActivity {
 
     private EditText edtSongTitle, edtArtistAlbum, edtDuration, edtCurrentTime;
-    private TextView tvFilePath, tvImagePath;  // Chỉnh sửa: Sử dụng TextView để hiển thị đường dẫn file nhạc
+    private TextView tvFilePath, tvImagePath;
     private CheckBox chkFavorite;
     private Button btnAddMusic;
     private modify modifyDb;
@@ -91,7 +92,7 @@ public class AddMusicActivity extends AppCompatActivity {
         int currentTime = currentTimeStr.isEmpty() ? 0 : Integer.parseInt(currentTimeStr);
 
         // Gọi phương thức addMusic để thêm bài hát
-        modifyDb.addMusic(this ,songTitle, artistAlbum, imagePath, duration, currentTime, favorite, filePath);
+        modifyDb.addMusic(this, songTitle, artistAlbum, imagePath, duration, currentTime, favorite, filePath);
         Toast.makeText(this, "Thêm bài hát thành công!", Toast.LENGTH_SHORT).show();
 
         // Chuyển sang trang chủ
@@ -99,16 +100,6 @@ public class AddMusicActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-    }
-
-    private void clearFields() {
-        edtSongTitle.setText("");
-        edtArtistAlbum.setText("");
-        tvImagePath.setText("");
-        edtDuration.setText("");
-        edtCurrentTime.setText("");
-        tvFilePath.setText("");
-        chkFavorite.setChecked(false);
     }
 
     private void chooseImage() {
@@ -125,13 +116,37 @@ public class AddMusicActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+        if (resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();
-            if (requestCode == PICK_IMAGE_REQUEST) {
-                tvImagePath.setText(uri.toString());
-            } else if (requestCode == PICK_FILE_REQUEST) {
-                tvFilePath.setText(uri.toString());
+            if (uri != null) {
+                if (requestCode == PICK_IMAGE_REQUEST) {
+                    // Lấy tên của hình ảnh và gán vào TextView tvImagePath
+                    String imageName = getFileNameFromUri(uri, MediaStore.Images.Media.DISPLAY_NAME);
+                    String imageNameNew = imageName.substring(0, imageName.lastIndexOf("."));
+                    tvImagePath.setText(imageNameNew);
+                } else if (requestCode == PICK_FILE_REQUEST) {
+                    // Lấy tên của file nhạc và gán vào TextView tvFilePath
+                    String fileName = getFileNameFromUri(uri, MediaStore.Audio.Media.DISPLAY_NAME);
+                    tvFilePath.setText(fileName);
+                }
             }
         }
+    }
+
+    private String getFileNameFromUri(Uri uri, String mediaColumn) {
+        String fileName = "Unknown"; // Giá trị mặc định nếu không tìm thấy
+        String[] projection = {mediaColumn};
+        try (Cursor cursor = getContentResolver().query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int nameIndex = cursor.getColumnIndex(mediaColumn);
+                if (nameIndex != -1) {
+                    fileName = cursor.getString(nameIndex);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileName;
     }
 }
