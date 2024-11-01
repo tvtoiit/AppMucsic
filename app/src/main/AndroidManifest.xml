@@ -41,5 +41,10 @@
         <activity
             android:name="com.example.appmusic.activity.NenActivity"
             android:label="Man hinh Nen" />
+
+        <!-- Activity Add music -->
+        <activity
+            android:name="com.example.appmusic.activity.AddMusicActivity"
+            android:label="Man hinh Add music" />
     </application>
 </manifest>

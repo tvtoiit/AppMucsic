@@ -14,7 +14,8 @@ public class sqDuLieu extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     SQLiteDatabase db;
     private static sqDuLieu instance = null;
-    //chạy trên nhiều luồng
+
+    // Chạy trên nhiều luồng
     // Singleton pattern để đảm bảo chỉ có một instance duy nhất
     public synchronized static sqDuLieu getInstance(Context context) {
         if (instance == null) {
@@ -37,14 +38,27 @@ public class sqDuLieu extends SQLiteOpenHelper {
                 DbContract.UserEntry.COLUMN_PASSWORD + " TEXT NOT NULL, " +
                 DbContract.UserEntry.COLUMN_IMAGEUSER + " TEXT);";
 
+        final String SQL_CREATE_MUSIC_TABLE = "CREATE TABLE " + DbContract.MusicEntry.TABLE_NAME + " (" +
+                DbContract.MusicEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                DbContract.MusicEntry.COLUMN_SONG_TITLE + " TEXT NOT NULL, " +
+                DbContract.MusicEntry.COLUMN_ARTIST_ALBUM + " TEXT, " +
+                DbContract.MusicEntry.COLUMN_COVER_IMAGE + " TEXT, " +
+                DbContract.MusicEntry.COLUMN_DURATION + " INTEGER, " +
+                DbContract.MusicEntry.COLUMN_CURRENT_TIMEB + " INTEGER, " +  // Thêm dấu cách ở đây
+                DbContract.MusicEntry.COLUMN_FAVORITE + " INTEGER DEFAULT 0, " +
+                DbContract.MusicEntry.COLUMN_FILE_PATH + " TEXT" +  // Bỏ dấu cộng ở cuối dòng cuối cùng
+                ");";
+
+
+
         // Thực thi lệnh SQL để tạo bảng User
         db.execSQL(SQL_CREATE_USER_TABLE);
+        // Thực thi lệnh SQL để tạo bảng Music
+        db.execSQL(SQL_CREATE_MUSIC_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Xóa bảng cũ nếu tồn tại và tạo lại bảng mới (nếu cần nâng cấp)
-        db.execSQL("DROP TABLE IF EXISTS " + DbContract.UserEntry.TABLE_NAME);
-        onCreate(db);
+
     }
 }

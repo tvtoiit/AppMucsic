@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -79,6 +81,10 @@ public class Tab_Home_Fragment extends Fragment implements NavigationView.OnNavi
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         Button btnLogin = view.findViewById(R.id.btnLogin);
+        Button btnAddMusic = view.findViewById(R.id.btnAddMusic);
+
+
+
 
         Button btnRegister = view.findViewById(R.id.btnRegister);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +92,14 @@ public class Tab_Home_Fragment extends Fragment implements NavigationView.OnNavi
             public void onClick(View v) {
                 // Xử lý khi button đăng nhập được click
                 goToLoginPage();
+            }
+        });
+
+        btnAddMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xử lý khi button đăng nhập được click
+                goToAddMusic();
             }
         });
 
@@ -110,6 +124,12 @@ public class Tab_Home_Fragment extends Fragment implements NavigationView.OnNavi
     // Hàm chuyển đến trang đăng nhập
     private void goToLoginPage() {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent);
+    }
+
+    // Hàm chuyển đến trang đăng nhập
+    private void goToAddMusic() {
+        Intent intent = new Intent(getActivity(), AddMusicActivity.class);
         startActivity(intent);
     }
 

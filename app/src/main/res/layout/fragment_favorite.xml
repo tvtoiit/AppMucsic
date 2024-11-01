@@ -19,8 +19,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="50dp"
-        android:src="@drawable/icontim" /> <!-- Icon mặc định -->
-
+        android:src="@drawable/icontim" />
 
     <ImageView
         android:id="@+id/moreOptionsButton"
@@ -29,5 +28,15 @@
         android:layout_marginEnd="50dp"
         android:layout_marginStart="320dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/iconmoreoptionsbutton" /> <!-- Biểu tượng ba chấm -->
+        android:src="@drawable/iconmoreoptionsbutton" />
+
+    <!-- Danh sách bài hát yêu thích -->
+    <ListView
+        android:id="@+id/favoriteSongsListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="130dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp"/>
 </FrameLayout>

@@ -7,8 +7,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ListView;
+import com.example.appmusic.entity.modify;
+import com.example.appmusic.adapter.MusicAdapter;
+import com.example.appmusic.model.Music;
 import com.example.appthibanglaixe.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +22,11 @@ import com.example.appthibanglaixe.R;
  * create an instance of this fragment.
  */
 public class Tab_Favorite_Fragment extends Fragment {
+
+    private ListView listView;
+    private MusicAdapter musicAdapter;
+    private List<Music> musicList;
+    private modify musicModifier;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,12 +66,28 @@ public class Tab_Favorite_Fragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // Khởi tạo danh sách nhạc
+        musicList = new ArrayList<>();
+        musicModifier = new modify(getContext());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite, container, false);
+        View view = inflater.inflate(R.layout.fragment_favorite, container, false);
+
+        // Ánh xạ ListView
+        listView = view.findViewById(R.id.favoriteSongsListView);
+
+        // Khởi tạo danh sách nhạc và lấy các bài hát yêu thích
+        musicList = musicModifier.getFavoriteSongs(getContext());
+
+        // Tạo Adapter và gán cho ListView
+        musicAdapter = new MusicAdapter(getContext(), musicList);
+        listView.setAdapter(musicAdapter);
+
+        return view;
     }
 }

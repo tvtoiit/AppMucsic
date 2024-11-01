@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edtSongTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Tiêu đề bài hát"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtArtistAlbum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Tên nghệ sĩ / Album"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtSongTitle"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnChooseImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chọn Hình Bìa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtArtistAlbum"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvImagePath"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Đường dẫn hình bìa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnChooseImage"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/edtDuration"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Thời gian (giây)"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvImagePath"
+        android:layout_marginTop="8dp"/>
+    <EditText
+        android:id="@+id/edtCurrentTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Thời gian hiện tại (giây)"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtDuration"
+        android:layout_marginTop="8dp"/>
+
+    <CheckBox
+        android:id="@+id/chkFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yêu thích"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtCurrentTime"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tvFilePath"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Đường dẫn tệp nhạc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/chkFavorite"
+        android:layout_marginTop="8dp"/>
+
+    <Button
+        android:id="@+id/btnSelectFile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chọn Tệp Nhạc"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvFilePath"/>
+
+
+    <Button
+        android:id="@+id/btnAddMusic"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Thêm Nhạc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSelectFile"
+        android:layout_marginTop="16dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

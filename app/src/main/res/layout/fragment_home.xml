@@ -60,6 +60,12 @@
             android:text="Đăng kí"
             android:onClick="goToRegisterPage" />
 
+        <Button
+            android:id="@+id/btnAddMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thêm Nhạc"
+            android:onClick="goToAddMusic" />
 
         <Button
             android:id="@+id/btnNen"
