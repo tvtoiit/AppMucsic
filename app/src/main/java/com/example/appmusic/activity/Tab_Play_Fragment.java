@@ -8,16 +8,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
+import com.example.appthibanglaixe.R;
 import com.example.appmusic.entity.modify;
 import com.example.appmusic.model.MusicFind;
-import com.example.appthibanglaixe.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,7 +25,8 @@ import com.example.appthibanglaixe.R;
  * create an instance of this fragment.
  */
 public class Tab_Play_Fragment extends Fragment {
-
+    private MediaPlayer mediaPlayer;
+    private boolean isPlaying = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,12 +70,15 @@ public class Tab_Play_Fragment extends Fragment {
 
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_play, container, false);
 
+        ImageButton playPauseButton = view.findViewById(R.id.play_pause_button);
         // Lấy ID từ Bundle
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -116,10 +120,36 @@ public class Tab_Play_Fragment extends Fragment {
                 } else {
                     System.out.println("File not found in raw directory");
                 }
-                // Cập nhật thời gian bắt đầu và thời gian kết thúc (giả sử bạn có thông tin này)
-                //startTimeTextView.setText("0:00"); // Thay đổi thành thời gian thực tế nếu có
-                //endTimeTextView.setText("2:30"); // Thay đổi thành thời gian thực tế nếu có
+
             }
+
+            // Thiết lập sự kiện click cho nút play/pause
+            playPauseButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String test = music.getFilePath();
+                    int resId = getResources().getIdentifier(test, "raw", getActivity().getPackageName());
+
+                    if (isPlaying) {
+                        // Dừng phát nhạc
+                        mediaPlayer.stop();
+                        mediaPlayer.release(); // Giải phóng tài nguyên
+                        mediaPlayer = null; // Đặt lại mediaPlayer
+                        playPauseButton.setImageResource(R.drawable.play); // Cập nhật biểu tượng
+                        isPlaying = false; // Cập nhật trạng thái
+                    } else {
+                        // Phát nhạc
+                        if (resId != 0) {
+                            mediaPlayer = MediaPlayer.create(getActivity(), resId);
+                            mediaPlayer.start();
+                            playPauseButton.setImageResource(R.drawable.heart); // Cập nhật biểu tượng
+                            isPlaying = true; // Cập nhật trạng thái
+                        } else {
+                            System.out.println("File not found in raw directory");
+                        }
+                    }
+                }
+            });
 
 
 
