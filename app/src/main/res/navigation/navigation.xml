@@ -1,0 +1,12 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <fragment
+        android:id="@+id/tabDownloadFragment"
+        android:name="com.example.appmusic.activity.Tab_Dowload_Fragment"
+        android:label="Download" />
+    <fragment
+        android:id="@+id/tabPlayFragment"
+        android:name="com.example.appmusic.activity.Tab_Play_Fragment"
+        android:label="Play" />
+</navigation>

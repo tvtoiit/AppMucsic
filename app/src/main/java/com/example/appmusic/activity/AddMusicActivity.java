@@ -128,7 +128,8 @@ public class AddMusicActivity extends AppCompatActivity {
                 } else if (requestCode == PICK_FILE_REQUEST) {
                     // Lấy tên của file nhạc và gán vào TextView tvFilePath
                     String fileName = getFileNameFromUri(uri, MediaStore.Audio.Media.DISPLAY_NAME);
-                    tvFilePath.setText(fileName);
+                    String fileNameNew = fileName.substring(0, fileName.lastIndexOf("."));
+                    tvFilePath.setText(fileNameNew);
                 }
             }
         }

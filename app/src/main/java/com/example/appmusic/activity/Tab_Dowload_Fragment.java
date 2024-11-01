@@ -1,5 +1,6 @@
 package com.example.appmusic.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,9 +11,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appmusic.adapter.MusicAdapter;
 import com.example.appmusic.adapter.MusicAdapterFind;
 import com.example.appmusic.entity.modify;
 import com.example.appmusic.model.MusicFind;
@@ -42,8 +46,38 @@ public class Tab_Dowload_Fragment extends Fragment {
         // Khởi tạo danh sách ban đầu với toàn bộ bài hát
         List<MusicFind> musicList = getMusicList("");
 
-        // Tạo adapter và thiết lập cho RecyclerView
-        musicAdapter = new MusicAdapterFind(getContext(), musicList);
+        // Khởi tạo adapter và thiết lập listener
+        /*musicAdapter = new MusicAdapterFind(getContext(), musicList, id -> {
+            // Xử lý sự kiện click item tại đây
+            Fragment playFragment = new Tab_Play_Fragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("MUSIC_ID", id);
+            playFragment.setArguments(bundle);
+
+            // Chuyển đổi sang Fragment Play
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, playFragment) // Đảm bảo bạn thay đúng ID
+                    .addToBackStack(null)
+                    .commit();
+        });*/
+
+        musicAdapter = new MusicAdapterFind(getContext(), musicList, id -> {
+            // Xử lý sự kiện click item tại đây
+            Fragment playFragment = new Tab_Play_Fragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("MUSIC_ID", id);
+            playFragment.setArguments(bundle);
+
+            // Chuyển đổi sang Fragment Play
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, playFragment) // Đảm bảo bạn thay đúng ID
+                    .addToBackStack(null)
+                    .commit();
+            // Sử dụng NavController để chuyển đến Tab_Play_Fragment
+
+        });
+
+        // Gán adapter cho RecyclerView
         recyclerView.setAdapter(musicAdapter);
 
         edtSearch.addTextChangedListener(new TextWatcher() {
@@ -65,6 +99,9 @@ public class Tab_Dowload_Fragment extends Fragment {
 
         return view;
     }
+
+
+
 
     // Phương thức để lấy danh sách bài hát theo từ khóa tìm kiếm
     private List<MusicFind> getMusicList(String query) {

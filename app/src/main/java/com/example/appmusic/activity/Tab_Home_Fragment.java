@@ -80,33 +80,14 @@ public class Tab_Home_Fragment extends Fragment implements NavigationView.OnNavi
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Button btnLogin = view.findViewById(R.id.btnLogin);
+
         Button btnAddMusic = view.findViewById(R.id.btnAddMusic);
-
-
-
-
-        Button btnRegister = view.findViewById(R.id.btnRegister);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Xử lý khi button đăng nhập được click
-                goToLoginPage();
-            }
-        });
 
         btnAddMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Xử lý khi button đăng nhập được click
                 goToAddMusic();
-            }
-        });
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goToRegisterPage();
             }
         });
 

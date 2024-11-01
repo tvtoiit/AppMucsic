@@ -99,20 +99,4 @@ public class MainActivity extends AppCompatActivity {
         mViewPage = findViewById(R.id.view_pager);
         mbottomNavigationView = findViewById(R.id.bottom_navigation);
     }
-
-    long countTime;
-    Toast toast;
-    @Override
-    public void onBackPressed() {
-        if(countTime+2000>System.currentTimeMillis()){
-            toast.cancel();
-            super.onBackPressed();
-            return;
-        }
-        else{
-            toast = Toast.makeText(this, "Nhấn Back 1 lần nữa để thoát", Toast.LENGTH_SHORT);
-            toast.show();
-        }
-        countTime = System.currentTimeMillis();
-    }
 }

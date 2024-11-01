@@ -6,8 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.appmusic.entity.modify;
 import com.example.appthibanglaixe.R;
 import com.example.appmusic.model.MusicFind;
 
@@ -22,11 +20,18 @@ public class MusicAdapterFind extends RecyclerView.Adapter<MusicAdapterFind.Musi
     private List<MusicFind> musicList;
     private List<MusicFind> fullMusicList;
     private Context context;
+    private OnItemClickListener listener;
 
-    public MusicAdapterFind(Context context, List<MusicFind> musicList) {
+    public interface OnItemClickListener {
+        void onItemClick(int id);
+    }
+
+    public MusicAdapterFind(Context context, List<MusicFind> musicList, OnItemClickListener listener) {
         this.context = context;
         this.musicList = musicList;
         this.fullMusicList = new ArrayList<>(musicList);
+        this.listener = listener;
+
     }
 
     @NonNull
@@ -39,6 +44,8 @@ public class MusicAdapterFind extends RecyclerView.Adapter<MusicAdapterFind.Musi
     @Override
     public void onBindViewHolder(@NonNull MusicViewHolder holder, int position) {
         MusicFind music = musicList.get(position);
+
+        int musicId = music.getId();
         holder.songTitle.setText(music.getSongTitle());
         holder.artistAlbum.setText(music.getArtistAlbum());
 
@@ -50,6 +57,7 @@ public class MusicAdapterFind extends RecyclerView.Adapter<MusicAdapterFind.Musi
             // Có thể thiết lập ảnh mặc định hoặc ẩn ImageView nếu không tìm thấy ảnh
             holder.coverImage.setImageResource(R.drawable.heart);
         }
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(musicId));
     }
 
     @Override

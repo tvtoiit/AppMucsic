@@ -1,5 +1,6 @@
 package com.example.appmusic.activity;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -7,10 +8,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.example.appmusic.entity.modify;
+import com.example.appmusic.model.MusicFind;
 import com.example.appthibanglaixe.R;
 
 /**
@@ -69,27 +75,57 @@ public class Tab_Play_Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_play, container, false);
 
+        // Lấy ID từ Bundle
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            int musicId = bundle.getInt("MUSIC_ID", -1); // Giá trị mặc định là -1 nếu không tìm thấy
+            // Tạo đối tượng modify để truy cập cơ sở dữ liệu
+            modify musicModifier = new modify(getContext());
+
+            // Lấy thông tin bài hát bằng ID
+            MusicFind music = musicModifier.getMusicById(musicId);
+
+            if (music != null) {
+                // Ánh xạ các thành phần UI
+                TextView songTitleTextView = view.findViewById(R.id.song_title);
+                TextView artistAlbumTextView = view.findViewById(R.id.artist_album);
+                ImageView coverImageView = view.findViewById(R.id.cover_image);
+                TextView startTimeTextView = view.findViewById(R.id.start_time);
+                TextView endTimeTextView = view.findViewById(R.id.end_time);
+
+                // Cập nhật UI với thông tin bài hát
+                songTitleTextView.setText(music.getSongTitle());
+                artistAlbumTextView.setText(music.getArtistAlbum());
+                String coverImageName = music.getCoverImage();
+                if (coverImageName != null ) {
+                    int resourceId = getResources().getIdentifier(coverImageName, "drawable", getActivity().getPackageName());
+                    if (resourceId != 0) {
+                        coverImageView.setImageResource(resourceId);
+                        coverImageView.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                String test = music.getFilePath();
+                System.out.println(test);
+
+                int resId = getResources().getIdentifier(test, "raw", getActivity().getPackageName());
+
+                if (resId != 0) {
+                    MediaPlayer mediaPlayer = MediaPlayer.create(getActivity(), resId);
+                    mediaPlayer.start();
+                } else {
+                    System.out.println("File not found in raw directory");
+                }
+                // Cập nhật thời gian bắt đầu và thời gian kết thúc (giả sử bạn có thông tin này)
+                //startTimeTextView.setText("0:00"); // Thay đổi thành thời gian thực tế nếu có
+                //endTimeTextView.setText("2:30"); // Thay đổi thành thời gian thực tế nếu có
+            }
+
+
+
+        }
+
         return view;
     }
-
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_luyentap,menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.ml_huongdan:
-                break;
-            default:
-                break;
-        }
-        return false;
-    }
-
-
 
 }
