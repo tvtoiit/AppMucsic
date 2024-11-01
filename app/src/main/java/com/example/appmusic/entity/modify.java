@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.appmusic.data.DbContract;
 import com.example.appmusic.data.sqDuLieu;
 import com.example.appmusic.model.Music;
+import com.example.appmusic.model.MusicFind;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,75 @@ public class modify {
     public modify(Context context) {
         this.context = context;
     }
+
+    public List<MusicFind> getAllMusic() {
+        List<MusicFind> musicList = new ArrayList<>();
+        SQLiteDatabase db = sqDuLieu.getInstance(context).getReadableDatabase();
+
+        // Câu lệnh SELECT để lấy tất cả bài hát
+        String[] projection = {
+                DbContract.MusicEntry._ID,
+                DbContract.MusicEntry.COLUMN_SONG_TITLE,
+                DbContract.MusicEntry.COLUMN_ARTIST_ALBUM,
+                DbContract.MusicEntry.COLUMN_COVER_IMAGE,
+                DbContract.MusicEntry.COLUMN_DURATION,
+                DbContract.MusicEntry.COLUMN_CURRENT_TIMEB,
+                DbContract.MusicEntry.COLUMN_FAVORITE,
+                DbContract.MusicEntry.COLUMN_FILE_PATH
+        };
+
+        Cursor cursor = db.query(
+                DbContract.MusicEntry.TABLE_NAME,   // The table to query
+                projection,                          // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                                // The values for the WHERE clause
+                null,                                // Don't group the rows
+                null,                                // Don't filter by row groups
+                null                                 // The sort order
+        );
+
+        // Duyệt qua các hàng trong cursor và thêm vào danh sách
+        while (cursor.moveToNext()) {
+            String songTitle = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_SONG_TITLE));
+            String artistAlbum = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_ARTIST_ALBUM));
+            String coverImage = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_COVER_IMAGE));
+
+
+            // Tạo đối tượng MusicFind và thêm vào danh sách
+            MusicFind music = new MusicFind(songTitle, artistAlbum, coverImage);
+            musicList.add(music);
+        }
+        cursor.close(); // Đóng cursor
+        db.close(); // Đóng database
+
+        return musicList; // Trả về danh sách bài hát
+    }
+
+    public List<MusicFind> searchMusicByTitle(String title) {
+        SQLiteDatabase db = sqDuLieu.getInstance(context).getReadableDatabase();
+        List<MusicFind> musicList = new ArrayList<>();
+
+        String selection = DbContract.MusicEntry.COLUMN_SONG_TITLE + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + title + "%"}; // Tìm kiếm theo tên bài hát
+
+        Cursor cursor = db.query(DbContract.MusicEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                // Lấy dữ liệu từ cursor và thêm vào danh sách
+                String songTitle = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_SONG_TITLE));
+                String artistAlbum = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_ARTIST_ALBUM));
+                String coverImage = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.MusicEntry.COLUMN_COVER_IMAGE));
+                musicList.add(new MusicFind(songTitle, artistAlbum, coverImage));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        return musicList;
+    }
+
+
 
     // Phương thức thêm người dùng mới vào cơ sở dữ liệu
     public void registerUser(String fullname, String username, String password, String imageuser) {
